@@ -1,0 +1,42 @@
+<!-- 
+STEP 3:
+Don't know much about creating an HTML form?
+That's OK, Django can do a lot of it for us.
+-->
+
+
+{% extends 'index.html' %}
+
+{% block content %}
+
+    <p><img src="{{ post.photo.url }}" alt="{{ post.alt_text }}" height="200" width="200"></p>
+    <p>Info: {{ post.body }}</p>
+    <p>Date published: {{ post.published }}</p>
+
+    <!-- You need to add the form tags on your own (make sure the method is "post" so it is handled correctly in our view) -->
+    <form method="post">
+        <!-- 
+            We passed form into our context, so let's use the Django handy as_p() method to render each field
+            inside of a <p> tag. When calling a python method in a django template, you don't need to use the parens.
+            If you were inside the python interpreter you'd use `form.as_p()` but in the template you'd use {{ form.as_p }}
+
+            https://docs.djangoproject.com/en/1.6/ref/forms/api/#as-p
+         -->
+        {{ form.as_p }}
+        <!-- 
+            csrf_token is required in Django forms. It's a helper templatetag that is used to prevent cross-site request forgery attacks.
+            If you don't include this, you'll see an error when you try to render this template
+
+            https://docs.djangoproject.com/en/1.6/ref/contrib/csrf/
+         -->
+        {% csrf_token %}
+        <input type="submit" value="Submit">
+    </form>
+
+    <!-- Here, let's render all the existing comments! -->
+    {% for comment in comments %}
+        <p>{{ comment.commenter.username }} says:</p>
+        <p>{{ comment.text }}</p>
+    {% endfor %}
+
+{% endblock content %}

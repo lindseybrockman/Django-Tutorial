@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>This is my blog!</h1>
+
+{% block content %}
+
+{% for post in posts %}
+    <h3>{{ post.title }}</h3>
+    {{ post.published }}
+    <p><img src="{{ post.photo.url }}" alt="{{ post.alt_text }}" height="200" width="200"></p>
+    <a href="/post/{{ post.pk }}/">Click here for more info.</a>
+{% endfor %}
+
+{% endblock content %}
+
+
+</body>
+</html>
